@@ -141,29 +141,29 @@ function initBuffers(){
     cubeVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(model.vertices), gl.STATIC_DRAW);
-    cubeVertexPositionBuffer.itemSize = 3;
-    cubeVertexPositionBuffer.numItems = 24;
+    cubeVertexPositionBuffer.itemSize = model.verticesItemSize;
+    cubeVertexPositionBuffer.numItems = model.verticesNumItems;
 
     // cube indexes
     cubeVertexIndexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(model.vertexIndexes), gl.STATIC_DRAW);
-    cubeVertexIndexBuffer.itemSize = 1;
-    cubeVertexIndexBuffer.numItems = 36;
+    cubeVertexIndexBuffer.itemSize = model.vertexIndexesItemSize;
+    cubeVertexIndexBuffer.numItems = model.vertexIndexesNumItems;
 
     // cube texture coordinates
     cubeVertexTextureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexTextureCoordBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(model.textureCoords), gl.STATIC_DRAW);
-    cubeVertexTextureCoordBuffer.itemSize = 2;
-    cubeVertexTextureCoordBuffer.numItems = 24;
+    cubeVertexTextureCoordBuffer.itemSize = model.textureCoordsItemSize;
+    cubeVertexTextureCoordBuffer.numItems = model.textureCoordsNumItems;
 }
 
 var model;
 function loadModel(){
     var request = new XMLHttpRequest();
     request.open("GET", "/oni2/rws/model");
-    request.responseType = "text/json";
+    request.setRequestHeader("Accept","application/json");
     request.onreadystatechange = function () {
         if (request.readyState == 4) {
             model = JSON.parse(request.responseText);
@@ -186,7 +186,7 @@ function initTexture(){
     crateImage.onload = function(){
         handleLoadedTexture(crateTextures);
     }
-    crateImage.src = "crate.gif";
+    crateImage.src = "DOOR_MP_FRONT.tga";
 }
 
 function handleLoadedTexture(textures){
@@ -235,7 +235,7 @@ var xRot = 0;
 var xSpeed = 0;
 var yRot = 0;
 var ySpeed = 0;
-var z = -5.0;
+var z = -25.0;
 var filter = 0;
 
 function drawScene(){
