@@ -2,8 +2,10 @@ function oni2Start() {
     var canvas = document.getElementById("canvas");
     initGL(canvas);
     initShaders();
-    initBuffers();
-    initTexture();
+
+    loadModel();
+    //initBuffers();
+    //initTexture();
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
@@ -95,9 +97,6 @@ function initShaders(){
     shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
     gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
 
-    shaderProgram.vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
-    gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
-
     shaderProgram.textureCoordAttribute  = gl.getAttribLocation(shaderProgram, "aTextureCoord");
     gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
 
@@ -141,95 +140,38 @@ function initBuffers(){
      // cube position
     cubeVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
-    var vertices = [
-        // front
-        -1.0,   -1.0,   1.0,
-        1.0,    -1.0,   1.0,
-        1.0,    1.0,    1.0,
-        -1.0,   1.0,    1.0,
-        // back
-        -1.0,   -1.0,   -1.0,
-        -1.0,   1.0,    -1.0,
-        1.0,    1.0,    -1.0,
-        1.0,    -1.0,   -1.0,
-        // top
-        -1.0,   1.0,    -1.0,
-        -1.0,   1.0,    1.0,
-        1.0,    1.0,    1.0,
-        1.0,    1.0,    -1.0,
-        // bottom
-        -1.0,   -1.0,   -1.0,
-        1.0,    -1.0,   -1.0,
-        1.0,    -1.0,   1.0,
-        -1.0,   -1.0,   1.0,
-        // right
-        1.0,    -1.0,   -1.0,
-        1.0,    1.0,    -1.0,
-        1.0,    1.0,    1.0,
-        1.0,    -1.0,   1.0,
-        // left
-        -1.0,   -1.0,   -1.0,
-        -1.0,   -1.0,   1.0,
-        -1.0,   1.0,    1.0,
-        -1.0,   1.0,    -1.0
-    ];
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(model.vertices), gl.STATIC_DRAW);
     cubeVertexPositionBuffer.itemSize = 3;
     cubeVertexPositionBuffer.numItems = 24;
 
     // cube indexes
     cubeVertexIndexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
-    var cubeVertexIndexes = [
-        0,1,2, 0,2,3,       // front
-        4,5,6, 4,6,7,       // back
-        8,9,10, 8,10,11,    // top
-        12,13,14, 12,14,15, // bottom
-        16,17,18, 16,18,19, // right
-        20,21,22, 20,22,23  // left
-    ];
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeVertexIndexes), gl.STATIC_DRAW);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(model.vertexIndexes), gl.STATIC_DRAW);
     cubeVertexIndexBuffer.itemSize = 1;
     cubeVertexIndexBuffer.numItems = 36;
 
     // cube texture coordinates
     cubeVertexTextureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexTextureCoordBuffer);
-    var textureCoords = [
-        // front
-        0.0, 0.0,
-        1.0, 0.0,
-        1.0, 1.0,
-        0.0, 1.0,
-        // back
-        1.0, 0.0,
-        1.0, 1.0,
-        0.0, 1.0,
-        0.0, 0.0,
-        // top
-        0.0, 1.0,
-        0.0, 0.0,
-        1.0, 0.0,
-        1.0, 1.0,
-        // bottom
-        1.0, 1.0,
-        0.0, 1.0,
-        0.0, 0.0,
-        1.0, 0.0,
-        // right
-        1.0, 0.0,
-        1.0, 1.0,
-        0.0, 1.0,
-        0.0, 0.0,
-        // left
-        0.0, 0.0,
-        1.0, 0.0,
-        1.0, 1.0,
-        0.0, 1.0
-    ];
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(model.textureCoords), gl.STATIC_DRAW);
     cubeVertexTextureCoordBuffer.itemSize = 2;
     cubeVertexTextureCoordBuffer.numItems = 24;
+}
+
+var model;
+function loadModel(){
+    var request = new XMLHttpRequest();
+    request.open("GET", "/oni2/rws/model");
+    request.responseType = "text/json";
+    request.onreadystatechange = function () {
+        if (request.readyState == 4) {
+            model = JSON.parse(request.responseText);
+            initBuffers();
+            initTexture();
+        }
+    }
+    request.send();
 }
 
 var crateTextures = new Array();
@@ -299,6 +241,10 @@ var filter = 0;
 function drawScene(){
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeigth);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    if (cubeVertexPositionBuffer == null || cubeVertexIndexBuffer == null || cubeVertexTextureCoordBuffer == null) {
+        return;
+    }
 
     mat4.perspective(45, gl.viewportWidth / gl.viewportHeigth, 0.1, 100.0, pMatrix);
     mat4.identity(mvMatrix);
