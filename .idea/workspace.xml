@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3fb4ebfa-5ef7-4869-b413-84c1ee9e9283" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/com_sun_jersey_jersey_json_1_17_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webapp/study-lab/lessons/lesson07.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webapp/study-lab/lessons/lesson07.js" />
-      <change type="DELETED" beforePath="C:\Users\eorel\Documents\GitHub\oni2\.idea\libraries\org_codehaus_jettison_jettison_1_3_3.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webapp/study-lab/lessons/lesson08.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webapp/study-lab/lessons/lesson08.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/server.iml" afterPath="$PROJECT_DIR$/server/server.iml" />
     </list>
     <ignored path="oni2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -66,64 +62,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/study-lab/index.html">
+      <file leaf-file-name="lesson08.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson08.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="94" selection-start="600" selection-end="600" vertical-scroll-proportion="0.0">
+            <state line="59" column="110" selection-start="2376" selection-end="2376" vertical-scroll-proportion="0.7005871">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="engine.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/study-lab/engine.js">
+      <file leaf-file-name="lesson08.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson08.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="165" column="39" selection-start="4716" selection-end="4716" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ModelsService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/src/org/libretools/oni2/rws/ModelsService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="114" column="68" selection-start="3623" selection-end="3623" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sun-jaxws.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/web/WEB-INF/sun-jaxws.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="40" selection-start="146" selection-end="146" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="web.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/web/WEB-INF/web.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="14" selection-start="1481" selection-end="1481" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="lesson07.html" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson07.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="53" selection-start="985" selection-end="985" vertical-scroll-proportion="0.19960861">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="lesson07.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson07.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="380" column="64" selection-start="11508" selection-end="11520" vertical-scroll-proportion="-10.0">
+            <state line="387" column="56" selection-start="11835" selection-end="11835" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -142,8 +93,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/study-lab/lesson03.js" />
-        <option value="$PROJECT_DIR$/study-lab/lesson03.html" />
         <option value="$PROJECT_DIR$/study-lab/lessons/lesson05.js" />
         <option value="$PROJECT_DIR$/study-lab/lessons/lesson06.js" />
         <option value="$PROJECT_DIR$/study-lab/index.html" />
@@ -158,6 +107,8 @@
         <option value="$PROJECT_DIR$/webapp/study-lab/engine.js" />
         <option value="$PROJECT_DIR$/webapp/study-lab/lessons/lesson07.js" />
         <option value="$PROJECT_DIR$/webapp/study-lab/lessons/lesson07.html" />
+        <option value="$PROJECT_DIR$/webapp/study-lab/lessons/lesson08.js" />
+        <option value="$PROJECT_DIR$/webapp/study-lab/lessons/lesson08.html" />
       </list>
     </option>
   </component>
@@ -216,6 +167,48 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="oni2" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oni2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oni2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="study-lab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="oni2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webapp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="study-lab" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lessons" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -773,7 +766,11 @@
       <created>1370444008956</created>
       <updated>1370444008956</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="lighting lesson">
+      <created>1370522374640</created>
+      <updated>1370522374640</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -844,7 +841,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="work" />
+    <option name="LAST_COMMIT_MESSAGE" value="lighting lesson" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -860,6 +857,7 @@
     <MESSAGE value="learning WebGL Lessons" />
     <MESSAGE value="next WebGL Lessons + initial rest setup" />
     <MESSAGE value="work" />
+    <MESSAGE value="lighting lesson" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -888,16 +886,6 @@
     </option>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavascriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/HTML5.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1283" column="7" selection-start="22915" selection-end="22915" vertical-scroll-proportion="0.33333334" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson05.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="66" selection-start="1600" selection-end="1600" vertical-scroll-proportion="122.56" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson06.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="266" column="89" selection-start="7558" selection-end="7558" vertical-scroll-proportion="0.27041742" />
@@ -984,7 +972,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson07.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="53" selection-start="985" selection-end="985" vertical-scroll-proportion="0.19960861">
+        <state line="36" column="53" selection-start="985" selection-end="985" vertical-scroll-proportion="-3.9230769">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson08.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="387" column="56" selection-start="11835" selection-end="11835" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson08.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="59" column="110" selection-start="2376" selection-end="2376" vertical-scroll-proportion="0.7005871">
           <folding />
         </state>
       </provider>
