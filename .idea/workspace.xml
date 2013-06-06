@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3fb4ebfa-5ef7-4869-b413-84c1ee9e9283" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/org_codehaus_jettison_jettison_1_3_3.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/com_sun_jersey_jersey_json_1_17_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webapp/study-lab/lessons/lesson07.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webapp/study-lab/lessons/lesson07.js" />
+      <change type="DELETED" beforePath="C:\Users\eorel\Documents\GitHub\oni2\.idea\libraries\org_codehaus_jettison_jettison_1_3_3.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/server.iml" afterPath="$PROJECT_DIR$/server/server.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/src/org/libretools/oni2/rws/ModelsService.java" afterPath="$PROJECT_DIR$/server/src/org/libretools/oni2/rws/ModelsService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/web/WEB-INF/web.xml" afterPath="$PROJECT_DIR$/server/web/WEB-INF/web.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/study-lab/engine.js" afterPath="$PROJECT_DIR$/webapp/study-lab/engine.js" />
     </list>
     <ignored path="oni2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -68,16 +69,16 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webapp/study-lab/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="94" selection-start="600" selection-end="600" vertical-scroll-proportion="-8.5">
+            <state line="18" column="94" selection-start="600" selection-end="600" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="engine.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="engine.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webapp/study-lab/engine.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="165" column="39" selection-start="4573" selection-end="4573" vertical-scroll-proportion="0.5726795">
+            <state line="165" column="39" selection-start="4716" selection-end="4716" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -86,10 +87,8 @@
       <file leaf-file-name="ModelsService.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/src/org/libretools/oni2/rws/ModelsService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="101" column="68" selection-start="2905" selection-end="2905" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="114" column="68" selection-start="3623" selection-end="3623" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -106,18 +105,27 @@
       <file leaf-file-name="web.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/web/WEB-INF/web.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="14" selection-start="1477" selection-end="1477" vertical-scroll-proportion="-29.75">
+            <state line="35" column="14" selection-start="1481" selection-end="1481" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
-          <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleAssemblyDescriptorReferencesProvider">
-            <state />
+        </entry>
+      </file>
+      <file leaf-file-name="lesson07.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson07.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="36" column="53" selection-start="985" selection-end="985" vertical-scroll-proportion="0.19960861">
+              <folding />
+            </state>
           </provider>
-          <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleGeneralEditorProvider">
-            <state />
-          </provider>
-          <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleAssemblyDescriptorProvider">
-            <state />
+        </entry>
+      </file>
+      <file leaf-file-name="lesson07.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson07.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="380" column="64" selection-start="11508" selection-end="11520" vertical-scroll-proportion="-10.0">
+              <folding />
+            </state>
           </provider>
         </entry>
       </file>
@@ -134,8 +142,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/study-lab/lesson02.html" />
-        <option value="$PROJECT_DIR$/study-lab/lesson02.js" />
         <option value="$PROJECT_DIR$/study-lab/lesson03.js" />
         <option value="$PROJECT_DIR$/study-lab/lesson03.html" />
         <option value="$PROJECT_DIR$/study-lab/lessons/lesson05.js" />
@@ -150,8 +156,17 @@
         <option value="$PROJECT_DIR$/server/src/org/libretools/oni2/rws/ModelsService.java" />
         <option value="$PROJECT_DIR$/server/web/WEB-INF/web.xml" />
         <option value="$PROJECT_DIR$/webapp/study-lab/engine.js" />
+        <option value="$PROJECT_DIR$/webapp/study-lab/lessons/lesson07.js" />
+        <option value="$PROJECT_DIR$/webapp/study-lab/lessons/lesson07.html" />
       </list>
     </option>
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
@@ -185,6 +200,16 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -198,7 +223,6 @@
       <pane id="PackagesPane">
         <subPane />
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -215,15 +239,16 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="Repository.Attach.Sources" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="Downloaded.Files.Path" value="C:\Users\eorel\Documents\GitHub\oni2\lib" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\eorel\Documents\GitHub\oni2\webapp\study-lab\lessons" />
       <recent name="C:\Users\eorel\Documents\GitHub\oni2\study-lab" />
       <recent name="C:\Users\eorel\Documents\GitHub\oni2\study-lab\lessons" />
       <recent name="C:\Users\eorel\Documents\GitHub\oni2\img" />
@@ -235,7 +260,7 @@
       <recent name="C:\Users\eorel\Documents\GitHub\oni2\study-lab" />
     </key>
   </component>
-  <component name="RunManager" selected="Jetty Server.ONI 2 Server">
+  <component name="RunManager" selected="Tomcat Server.Tomcat 7">
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
       <module name="" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m" />
@@ -256,24 +281,6 @@
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
@@ -303,6 +310,44 @@
       <envs />
       <properties />
       <listeners />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -409,31 +454,22 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
+    <configuration default="true" type="JavascriptDebugSession" factoryName="Remote">
+      <JSRemoteDebuggerConfigurationSettings>
+        <option name="engineId" value="embedded" />
+        <option name="fileUrl" />
+      </JSRemoteDebuggerConfigurationSettings>
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="JavascriptDebugSession" factoryName="Remote">
-      <JSRemoteDebuggerConfigurationSettings>
-        <option name="engineId" />
+    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
+      <JSDebuggerConfigurationSettings>
+        <option name="engineId" value="embedded" />
         <option name="fileUrl" />
-      </JSRemoteDebuggerConfigurationSettings>
+      </JSDebuggerConfigurationSettings>
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -466,17 +502,6 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
-      <JSDebuggerConfigurationSettings>
-        <option name="engineId" value="embedded" />
-        <option name="fileUrl" />
-      </JSDebuggerConfigurationSettings>
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
     <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local">
       <deployment />
       <server-settings />
@@ -490,7 +515,6 @@
       </method>
     </configuration>
     <configuration default="false" name="ONI 2 Server" type="JettyConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="Jetty 8.1.7.v20120910">
-      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/oni2/" />
       <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
         <artifact name="oni2-server:war exploded">
@@ -611,8 +635,82 @@
         </option>
       </method>
     </configuration>
-    <list size="1">
+    <configuration default="false" name="Tomcat 7" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 7">
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/oni2/" />
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="oni2-server:war exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/oni2" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="Unnamed_oni2" />
+      </server-settings>
+      <predefined_log_file id="TOMCAT_LOCALHOST_LOG_ID" enabled="true" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <RunnerSettings RunnerId="Cover" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="50806" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method>
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="oni2-server:war exploded" />
+        </option>
+      </method>
+    </configuration>
+    <list size="2">
       <item index="0" class="java.lang.String" itemvalue="Jetty Server.ONI 2 Server" />
+      <item index="1" class="java.lang.String" itemvalue="Tomcat Server.Tomcat 7" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -671,7 +769,11 @@
       <created>1370441758358</created>
       <updated>1370441758358</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="work">
+      <created>1370444008956</created>
+      <updated>1370444008956</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -691,12 +793,13 @@
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924107" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924107" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24946581" sideWeight="0.69308037" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30691963" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24946581" sideWeight="0.62723213" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37276787" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -741,7 +844,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="next WebGL Lessons + initial rest setup" />
+    <option name="LAST_COMMIT_MESSAGE" value="work" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -756,6 +859,7 @@
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
     <MESSAGE value="learning WebGL Lessons" />
     <MESSAGE value="next WebGL Lessons + initial rest setup" />
+    <MESSAGE value="work" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -784,118 +888,103 @@
     </option>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson04.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavascriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/HTML5.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1283" column="7" selection-start="22915" selection-end="22915" vertical-scroll-proportion="0.33333334">
-          <folding />
-        </state>
+        <state line="1283" column="7" selection-start="22915" selection-end="22915" vertical-scroll-proportion="0.33333334" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson05.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="66" selection-start="1600" selection-end="1600" vertical-scroll-proportion="122.56">
-          <folding />
-        </state>
+        <state line="56" column="66" selection-start="1600" selection-end="1600" vertical-scroll-proportion="122.56" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson06.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="266" column="89" selection-start="7558" selection-end="7558" vertical-scroll-proportion="0.27041742">
-          <folding />
-        </state>
+        <state line="266" column="89" selection-start="7558" selection-end="7558" vertical-scroll-proportion="0.27041742" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/js/webgl-utils.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="6" selection-start="2382" selection-end="2382" vertical-scroll-proportion="0.029513888">
-          <folding />
-        </state>
+        <state line="59" column="6" selection-start="2382" selection-end="2382" vertical-scroll-proportion="0.029513888" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson06.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="52" selection-start="283" selection-end="283" vertical-scroll-proportion="-3.9230769">
-          <folding />
-        </state>
+        <state line="6" column="52" selection-start="283" selection-end="283" vertical-scroll-proportion="-3.9230769" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson05.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="48" selection-start="279" selection-end="279" vertical-scroll-proportion="-3.9230769">
-          <folding />
-        </state>
+        <state line="6" column="48" selection-start="279" selection-end="279" vertical-scroll-proportion="-3.9230769" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson04.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="48" selection-start="279" selection-end="279" vertical-scroll-proportion="-3.9230769">
-          <folding />
-        </state>
+        <state line="6" column="48" selection-start="279" selection-end="279" vertical-scroll-proportion="-3.9230769" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson03.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="48" selection-start="279" selection-end="279" vertical-scroll-proportion="-3.9230769">
-          <folding />
-        </state>
+        <state line="6" column="48" selection-start="279" selection-end="279" vertical-scroll-proportion="-3.9230769" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson02.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/web/WEB-INF/sun-jaxws.xml">
+    <entry file="file://$PROJECT_DIR$/webapp/study-lab/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="40" selection-start="146" selection-end="146" vertical-scroll-proportion="0.0">
+        <state line="18" column="94" selection-start="600" selection-end="600" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/src/org/libretools/oni2/rws/ModelsService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="68" selection-start="2905" selection-end="2905" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state line="114" column="68" selection-start="3623" selection-end="3623" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/study-lab/index.html">
+    <entry file="file://$PROJECT_DIR$/server/web/WEB-INF/sun-jaxws.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="94" selection-start="600" selection-end="600" vertical-scroll-proportion="-8.5">
+        <state line="4" column="40" selection-start="146" selection-end="146" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/study-lab/engine.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="165" column="39" selection-start="4716" selection-end="4716" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/web/WEB-INF/web.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="14" selection-start="1477" selection-end="1477" vertical-scroll-proportion="-29.75">
-          <folding />
-        </state>
+      <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleGeneralEditorProvider">
+        <state />
       </provider>
       <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleAssemblyDescriptorReferencesProvider">
         <state />
       </provider>
-      <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleGeneralEditorProvider">
-        <state />
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="14" selection-start="1481" selection-end="1481" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
       <provider editor-type-id="com.intellij.javaee.module.view.web.viewlets.WebModuleAssemblyDescriptorProvider">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/study-lab/engine.js">
+    <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson07.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="165" column="39" selection-start="4573" selection-end="4573" vertical-scroll-proportion="0.5726795">
+        <state line="380" column="64" selection-start="11508" selection-end="11520" vertical-scroll-proportion="-10.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/study-lab/lessons/lesson07.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="53" selection-start="985" selection-end="985" vertical-scroll-proportion="0.19960861">
           <folding />
         </state>
       </provider>
@@ -978,7 +1067,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>org.codehaus.jettison:jettison:1.3.3</last-edited>
+          <last-edited>org.glassfish.jersey.containers:jersey-container-servlet:2.0-rc1</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
