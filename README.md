@@ -1,4 +1,4 @@
-oni2
+js-lab
 ====
 
-WebGL game experimental implementation
+JavaScript experiments
