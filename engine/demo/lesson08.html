@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>ONI2</title>
+    <script type="text/javascript" src="../lib/glMatrix-0.9.5.min.js"></script>
+    <script type="text/javascript" src="../lib/webgl-utils.js"></script>
+    <script type="text/javascript" src="lesson08.js"></script>
+</head>
+<body onload="oni2Start();">
+
+<canvas id="canvas" width="500" height="500"></canvas>
+
+<style type="text/css">
+    canvas, .settings{
+        float: left;
+    }
+    form {
+        margin: 20px;
+        width: 300px;
+    }
+    fieldset label {
+        text-align: right;
+        float: right;
+    }
+    fieldset input {
+        margin-left: 10px;
+        float: right;
+        width: 120px;
+    }
+    br {
+        clear: both;
+    }
+</style>
+<div class="settings">
+    <form>
+        <input type="checkbox" id="lighting" checked style="margin: 10px 10px;"><label for="lighting">lighting</label><br>
+        <fieldset>
+            <legend>ambient-light</legend>
+            <input type="text" id="ambientR" value="1"/><label for="ambientR">ambientR:</label><br>
+            <input type="text" id="ambientG" value="1"/><label for="ambientG">ambientG:</label><br>
+            <input type="text" id="ambientB" value="1"/><label for="ambientB">ambientB:</label><br>
+        </fieldset>
+        <fieldset>
+            <legend>directional-light</legend>
+            <input type="text" id="directionalR" value="1"/><label for="directionalR">directionalR:</label><br>
+            <input type="text" id="directionalG" value="3"/><label for="directionalG">directionalG:</label><br>
+            <input type="text" id="directionalB" value="1"/><label for="directionalB">directionalB:</label><br>
+        </fieldset>
+        <fieldset>
+            <legend>light-direction</legend>
+            <input type="text" id="lightDirectionX" value="0"/><label for="lightDirectionX">lightDirectionX:</label><br>
+            <input type="text" id="lightDirectionY" value="10"/><label for="ambientG">lightDirectionY:</label><br>
+            <input type="text" id="lightDirectionZ" value="-7"/><label for="ambientB">lightDirectionZ:</label><br>
+        </fieldset>
+    </form>
+</div>
+<div class="settings">
+    <form>
+        <input type="checkbox" id="blending" checked style="margin: 10px 10px;"><label for="blending">blending</label><br>
+        <fieldset>
+            <legend>alpha</legend>
+            <input type="text" id="alpha" value="1"/><label for="alpha">alpha:</label><br>
+        </fieldset>
+        <fieldset>
+            <legend>Blender file</legend>
+            <input type="file" id="file" name="files[]" style="float:none;"/>
+        </fieldset>
+    </form>
+</div>
+
+<script id="shader-fs" type="x-shader/x-fragment">
+    precision mediump float;
+
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+
+    uniform float uAlpha;
+
+    uniform sampler2D uSampler;
+
+    void main(void){
+        vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+        gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a * uAlpha);
+    }
+</script>
+
+<script id="shader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+    attribute vec2 aTextureCoord;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+    uniform mat3 uNMatrix;
+
+    uniform vec3 uAmbientColor;
+
+    uniform vec3 uLightingDirection;
+    uniform vec3 uDirectionalColor;
+
+    uniform bool uUseLighting;
+
+    varying vec2 vTextureCoord;
+    varying vec3 vLightWeighting;
+
+    void main(void){
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+        vTextureCoord = aTextureCoord;
+
+        if(!uUseLighting){
+            vLightWeighting = vec3(1.0, 1.0, 1.0);
+        } else {
+            vec3 transformedNormal = uNMatrix * aVertexNormal;
+            float directionalLightWeighting = max(dot(transformedNormal, uLightingDirection), 0.0);
+            vLightWeighting = uAmbientColor + uDirectionalColor * directionalLightWeighting;
+        }
+    }
+</script>
+</body>
+</html>
