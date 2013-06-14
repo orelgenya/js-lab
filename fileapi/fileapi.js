@@ -62,37 +62,93 @@ function loaded(evt) {
     // Obtain the read file data
     file = evt.target.result;
     console.log("loaded "+file.byteLength);
-    readHeader();
-    readFileBlock();
+
+//    var x = new Uint8Array(file, 0, file.byteLength);
+//    console.log(x);
+    var blend = new BlenderReader(file);
+    blend.read();
     console.log(blend);
     // xhr.send(fileString)
 }
-var file;
-var pos = 0;
-var blend = {blocks:[]};
-function readHeader(){
-    var h = new Uint8Array(file, 0, 12);
-    blend.version = String.fromCharCode.apply(null, h);
-    blend.psize = blend.version.charAt(7);
-    if(blend.psize == '_') blend.psize = 4;
-    else if(blend.psize = '-') blend.psize = 8;
-    else throw 'Unexpected psize: '+blend.psize;
+
+BlenderReader = function(file){
+    this.file = file;
+    this.blocks = [];
+    this.offset = 0;
 }
-function readFileBlock(){
-    var block = {};
+BlenderReader.prototype.read = function(){
+    this.readHeader();
+    var notENDB = true;
+    var bhead;
+    while(notENDB){
+        bhead = this.readFileBlockHeader();
+        if(bhead.code == "DNA1"){
+            //this.readDNA();
+        }else if(bhead.code == "ENDB"){
+            notENDB = false;
+        }
+        this.offset += bhead.size;
+        this.blocks.push(bhead);
+        console.log(bhead.code);
+    }
+}
+BlenderReader.prototype.readHeader = function(){
+    var h = new Uint8Array(file, 0, 12);
+    this.version = String.fromCharCode.apply(null, h);
+    this.pointerSize = this.version.charAt(7);
+    if(this.pointerSize == '_') this.pointerSize = 4;
+    else if(this.pointerSize = '-') this.pointerSize = 8;
+    else throw 'Unexpected psize: '+this.pointerSize;
+    this.blockHeaderSize = 16 + this.pointerSize;
+    this.offset = 12;
+}
+BlenderReader.prototype.readFileBlockHeader = function(){
+    var pos = this.offset;
+    var bhead = {};
     var code = new Uint8Array(file, pos, 4); pos += 4;
-    block.code = String.fromCharCode.apply(null, code);
+    bhead.code = String.fromCharCode.apply(null, code);
 
     var size = new Uint32Array(file, pos, 1); pos += 4;
-    block.size = size[0];
+    bhead.size = size[0];
 
-    var pointer = new Uint8Array(file, pos, blend.psize); pos += blend.psize;
-    block.pointer = pointer;
+    var pointer = new Uint8Array(file, pos, this.pointerSize); pos += this.pointerSize;
+    bhead.pointer = pointer;
+
+    var buf = new Uint32Array(file, pos, 2);
+    bhead.index = buf[0];
+    bhead.num = buf[1];
+
+    this.offset += this.blockHeaderSize;
+    return bhead;
+}
+BlenderReader.prototype.readDNA = function(){
+    var pos = this.offset;
+    var dna = {};
+    var name = new Uint8Array(file, pos, 8); pos += 8;
+    dna.name = String.fromCharCode.apply(null, name);
+
+    var num = new Uint32Array(file, pos, 1); pos += 4;
+    dna.num = num[0];
+
+    for(var i = 0; i < dna.num; ){
+
+    }
+
+    var pointer = new Uint8Array(file, pos, blend.pointerSize); pos += blend.pointerSize;
+    bhead.pointer = pointer;
 
     var buf = new Uint32Array(file, pos, 2); pos += 8;
-    block.index = buf[0];
-    block.num = buf[1];
-    blend.blocks.push(block);
+    bhead.index = buf[0];
+    bhead.num = buf[1];
+
+    this.offset += this.blockHeaderSize;
+    return bhead;
+}
+
+function readString(size, updatePos){
+    var code = new Uint8Array(file, pos, size);
+    if(updatePos) pos += size;
+    return String.fromCharCode.apply(null, code);
 }
 
 function errorHandler(evt) {
