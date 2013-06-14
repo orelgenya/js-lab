@@ -60,7 +60,7 @@ function updateProgress(evt) {
 
 function loaded(evt) {
     // Obtain the read file data
-    file = evt.target.result;
+    var file = evt.target.result;
     console.log("loaded "+file.byteLength);
 
 //    var x = new Uint8Array(file, 0, file.byteLength);
@@ -83,7 +83,7 @@ BlenderReader.prototype.read = function(){
     while(notENDB){
         bhead = this.readFileBlockHeader();
         if(bhead.code == "DNA1"){
-            //this.readDNA();
+            this.dna = this.readDNA(bhead);
         }else if(bhead.code == "ENDB"){
             notENDB = false;
         }
@@ -93,7 +93,7 @@ BlenderReader.prototype.read = function(){
     }
 }
 BlenderReader.prototype.readHeader = function(){
-    var h = new Uint8Array(file, 0, 12);
+    var h = new Uint8Array(this.file, 0, 12);
     this.version = String.fromCharCode.apply(null, h);
     this.pointerSize = this.version.charAt(7);
     if(this.pointerSize == '_') this.pointerSize = 4;
@@ -105,47 +105,107 @@ BlenderReader.prototype.readHeader = function(){
 BlenderReader.prototype.readFileBlockHeader = function(){
     var pos = this.offset;
     var bhead = {};
-    var code = new Uint8Array(file, pos, 4); pos += 4;
+    var code = new Uint8Array(this.file, pos, 4); pos += 4;
     bhead.code = String.fromCharCode.apply(null, code);
 
-    var size = new Uint32Array(file, pos, 1); pos += 4;
+    var size = new Uint32Array(this.file, pos, 1); pos += 4;
     bhead.size = size[0];
 
-    var pointer = new Uint8Array(file, pos, this.pointerSize); pos += this.pointerSize;
+    var pointer = new Uint8Array(this.file, pos, this.pointerSize); pos += this.pointerSize;
     bhead.pointer = pointer;
 
-    var buf = new Uint32Array(file, pos, 2);
+    var buf = new Uint32Array(this.file, pos, 2);
     bhead.index = buf[0];
     bhead.num = buf[1];
 
     this.offset += this.blockHeaderSize;
     return bhead;
 }
-BlenderReader.prototype.readDNA = function(){
+BlenderReader.prototype.readDNA = function(bhead){
     var pos = this.offset;
-    var dna = {};
-    var name = new Uint8Array(file, pos, 8); pos += 8;
-    dna.name = String.fromCharCode.apply(null, name);
+    var dna = {names:[],types:[],typeLengths:[],structures:[]};
+    var sdnaname = new Uint8Array(this.file, pos, 8); pos += 8;
+    dna.SDNANAME = String.fromCharCode.apply(null, sdnaname);
 
-    var num = new Uint32Array(file, pos, 1); pos += 4;
-    dna.num = num[0];
+    // parseNames
+    pos = readStrings0(this.file, pos, this.offset + bhead.size - pos, dna.names);
+    pos = allign(pos, 4);
 
-    for(var i = 0; i < dna.num; ){
+    // parseTypes
+    var type = new Uint8Array(this.file, pos, 4); pos += 4;
+    dna.TYPE = String.fromCharCode.apply(null, type);
+    pos = readStrings0(this.file, pos, this.offset + bhead.size - pos, dna.types);
+    pos = allign(pos, 4);
 
+    var tlen = new Uint8Array(this.file, pos, 4); pos += 4;
+    dna.TLEN = String.fromCharCode.apply(null, tlen);
+
+    tlen = dna.types.length;
+//    var tlens = new Uint8Array(this.file, pos, 2*tlen);
+    var tlens = new Uint16Array(this.file, pos, 32);
+    for(var i = 0; i < tlen; i++){
+        dna.typeLengths.push(tlens[i]);
+    }
+    pos += 2*tlen;
+    pos = allign(pos, 4);
+
+    // parseStructures
+    var strc = new Uint8Array(this.file, pos, 4); pos += 4;
+    dna.STRC = String.fromCharCode.apply(null, strc);
+
+    var snum = new Uint32Array(this.file, pos, 1)[0]; pos += 4;
+    for(var i = 0; i < snum; i++){
+        var struct = {fields:[]};
+        var fnum = new Uint16Array(this.file, pos, 1)[0]; pos += 2;
+        var fields = new Uint16Array(this.file, pos, 2*fnum);
+        for(var i = 0; i < fnum; i++){
+            struct.fields.push({
+                typeIndex: fields[2*i],
+                nameIndex: fields[2*i+1]
+            });
+        }
+        dna.structures.push(struct);
+        pos += 4*fnum;
     }
 
-    var pointer = new Uint8Array(file, pos, blend.pointerSize); pos += blend.pointerSize;
-    bhead.pointer = pointer;
-
-    var buf = new Uint32Array(file, pos, 2); pos += 8;
-    bhead.index = buf[0];
-    bhead.num = buf[1];
-
-    this.offset += this.blockHeaderSize;
-    return bhead;
+    return dna;
 }
 
-function readString(size, updatePos){
+function readStrings0(file, pos, maxLength, array){
+    var num = new Uint32Array(file, pos, 1)[0];
+    pos += 4; maxLength -= 4;
+
+    var buffer = new Uint8Array(file, pos, maxLength);
+    var offset = 0;
+    for(var i = 0; i < num; i++){
+        var value = readString0(buffer, offset);
+        array.push(value);
+        offset += value.length + 1;
+    }
+    return pos + offset;
+}
+
+function readString0(buffer, pos){
+    if(pos >= buffer.length) return null;
+    var end = pos;
+    while(buffer[end] != 0){
+        end++;
+    }
+    return String.fromCharCode.apply(null, buffer.subarray(pos, end));
+}
+
+function parseUnsignedShort(){
+
+}
+
+function allign(offset, i) {
+    while (offset%i != 0) {
+        offset++;
+    }
+    return offset;
+}
+
+function readString(file, size, updatePos){
     var code = new Uint8Array(file, pos, size);
     if(updatePos) pos += size;
     return String.fromCharCode.apply(null, code);
