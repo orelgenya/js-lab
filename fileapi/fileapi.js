@@ -63,12 +63,19 @@ function loaded(evt) {
     var file = evt.target.result;
     console.log("loaded "+file.byteLength);
 
-//    var x = new Uint8Array(file, 0, file.byteLength);
-//    console.log(x);
     var blend = new BlenderReader(file);
     blend.read();
-    console.log(blend);
-    // xhr.send(fileString)
+    //console.log(blend);
+    var s = blend.dna.structures;
+    var t = blend.dna.types;
+    var tl = blend.dna.typeLengths;
+    for(var i in s){
+        var tname = t[s[i].type];
+        if(tname.indexOf("Mesh") != -1){
+            console.log(t[s[i].type]);
+
+        }
+    }
 }
 
 BlenderReader = function(file){
@@ -89,7 +96,6 @@ BlenderReader.prototype.read = function(){
         }
         this.offset += bhead.size;
         this.blocks.push(bhead);
-        console.log(bhead.code);
     }
 }
 BlenderReader.prototype.readHeader = function(){
@@ -156,12 +162,14 @@ BlenderReader.prototype.readDNA = function(bhead){
     var snum = new Uint32Array(this.file, pos, 1)[0]; pos += 4;
     for(var i = 0; i < snum; i++){
         var struct = {fields:[]};
-        var fnum = new Uint16Array(this.file, pos, 1)[0]; pos += 2;
+        var buffer = new Uint16Array(this.file, pos, 2);
+        struct.type = buffer[0]; pos += 2;
+        var fnum = buffer[1]; pos += 2;
         var fields = new Uint16Array(this.file, pos, 2*fnum);
-        for(var i = 0; i < fnum; i++){
+        for(var j = 0; j < fnum; j++){
             struct.fields.push({
-                typeIndex: fields[2*i],
-                nameIndex: fields[2*i+1]
+                typeIndex: fields[2*j],
+                nameIndex: fields[2*j+1]
             });
         }
         dna.structures.push(struct);
