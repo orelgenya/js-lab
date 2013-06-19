@@ -14,7 +14,7 @@ function handleFileSelect(evt) {
     // files is a FileList of File objects. List some properties.
     for (var i = 0, f; f = files[i]; i++) {
         console.log('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-            f.size, ' bytes, last modified: ',
+            f.dataSize, ' bytes, last modified: ',
             f.lastModifiedDate.toLocaleDateString(), '</li>');
     }
     startRead();
@@ -65,17 +65,11 @@ function loaded(evt) {
 
     var blend = new BlenderReader(file);
     blend.read();
-    //console.log(blend);
-    var s = blend.dna.structures;
-    var t = blend.dna.types;
-    var tl = blend.dna.typeLengths;
-    for(var i in s){
-        var tname = t[s[i].type];
-        if(tname.indexOf("Mesh") != -1){
-            console.log(t[s[i].type]);
-
-        }
-    }
+    console.log(blend);
+    var s = blend.reviewStruct("Mesh");
+    console.log(s);
+    blend.readData();
+    console.log(blend);
 }
 
 BlenderReader = function(file){
@@ -94,7 +88,7 @@ BlenderReader.prototype.read = function(){
         }else if(bhead.code == "ENDB"){
             notENDB = false;
         }
-        this.offset += bhead.size;
+        this.offset += bhead.dataSize;
         this.blocks.push(bhead);
     }
 }
@@ -115,16 +109,19 @@ BlenderReader.prototype.readFileBlockHeader = function(){
     bhead.code = String.fromCharCode.apply(null, code);
 
     var size = new Uint32Array(this.file, pos, 1); pos += 4;
-    bhead.size = size[0];
+    bhead.dataSize = size[0];
 
-    var pointer = new Uint8Array(this.file, pos, this.pointerSize); pos += this.pointerSize;
+    var buffer = new Uint32Array(this.file, pos, this.pointerSize/4); pos += this.pointerSize;
+    var pointer = buffer[0].toString(16);
+    if(buffer.length == 2) pointer += buffer[1].toString(16);
     bhead.pointer = pointer;
 
     var buf = new Uint32Array(this.file, pos, 2);
-    bhead.index = buf[0];
-    bhead.num = buf[1];
+    bhead.sdnaIndex = buf[0];
+    bhead.countOfStructures = buf[1];
 
     this.offset += this.blockHeaderSize;
+    bhead.dataOffset = this.offset;
     return bhead;
 }
 BlenderReader.prototype.readDNA = function(bhead){
@@ -134,13 +131,13 @@ BlenderReader.prototype.readDNA = function(bhead){
     dna.SDNANAME = String.fromCharCode.apply(null, sdnaname);
 
     // parseNames
-    pos = readStrings0(this.file, pos, this.offset + bhead.size - pos, dna.names);
+    pos = readStrings0(this.file, pos, this.offset + bhead.dataSize - pos, dna.names);
     pos = allign(pos, 4);
 
     // parseTypes
     var type = new Uint8Array(this.file, pos, 4); pos += 4;
     dna.TYPE = String.fromCharCode.apply(null, type);
-    pos = readStrings0(this.file, pos, this.offset + bhead.size - pos, dna.types);
+    pos = readStrings0(this.file, pos, this.offset + bhead.dataSize - pos, dna.types);
     pos = allign(pos, 4);
 
     var tlen = new Uint8Array(this.file, pos, 4); pos += 4;
@@ -148,7 +145,7 @@ BlenderReader.prototype.readDNA = function(bhead){
 
     tlen = dna.types.length;
 //    var tlens = new Uint8Array(this.file, pos, 2*tlen);
-    var tlens = new Uint16Array(this.file, pos, 32);
+    var tlens = new Uint16Array(this.file, pos, tlen);
     for(var i = 0; i < tlen; i++){
         dna.typeLengths.push(tlens[i]);
     }
@@ -177,6 +174,202 @@ BlenderReader.prototype.readDNA = function(bhead){
     }
 
     return dna;
+};
+BlenderReader.prototype.readData = function(){
+    for(var i in this.blocks){
+        var b = this.blocks[i];
+        if(this.isSDNAFileBlock(b)){
+//            console.log("************************");
+//            console.log("reading block["+i+"] " + b.code);
+//            console.log("************************");
+            this.offset = b.dataOffset;
+            b.structs = [];
+            for(var j = 0; j < b.countOfStructures; j++){
+//                console.log("--------------------");
+//                console.log("reading structure " + this.dna.types[this.dna.structures[b.sdnaIndex].type]);
+//                console.log("--------------------");
+                var x = this.readStruct(b.sdnaIndex);
+                b.structs.push(x);
+//                console.log(x);
+            }
+        }
+    }
+};
+BlenderReader.prototype.isSDNAFileBlock = function(bhead){
+    switch(bhead.code){
+        case 'REND':
+        case 'DNA1':
+        case 'ENDB':
+            return false;
+        default:
+            return true;
+    }
+};
+BlenderReader.prototype.readStruct = function(sdnaIndex){
+    var x = {};
+    var s = this.dna.structures[sdnaIndex];
+    var typeLength = this.dna.typeLengths[s.type];
+    var f = s.fields;
+    var type = this.dna.types[s.type];
+    var offset = this.offset;
+    for(var j in f){
+        var ftype = this.dna.types[f[j].typeIndex];
+        var fname = this.dna.names[f[j].nameIndex];
+        var fvalue;
+        var arraySize = countArraySize(fname);
+        if(fname.indexOf('*') != -1){
+            fvalue = this.readPointers(arraySize);
+        }else{
+            switch(ftype){
+                case 'char':
+                case 'uchar':
+                        if(arraySize == -1) arraySize = 1;
+                        var buffer = new Uint8Array(this.file, this.offset, arraySize); this.offset += arraySize;
+                        fvalue = String.fromCharCode.apply(null, buffer);
+                        break;
+                case 'short':
+                        fvalue = this.readNumbers(Int16Array, 2, arraySize);
+                        break;
+                case 'ushort':
+                        fvalue = this.readNumbers(Uint16Array, 2, arraySize);
+                        break;
+                case 'int':
+                        fvalue = this.readNumbers(Int32Array, 4, arraySize);
+                        break;
+                case 'float':
+                        fvalue = this.readNumbers(Float32Array, 4, arraySize);
+                        break;
+                case 'double':
+                        fvalue = this.readNumbers(Float64Array, 8, arraySize);
+                        break;
+                case 'double':
+                        fvalue = this.readNumbers(Float64Array, 8, arraySize);
+                        break;
+                case 'uint64_t':
+                        if(arraySize == -1) arraySize = 1;
+                        var temp = this.readNumbers(Uint32Array, 4, arraySize*2);
+                        if(temp.length == 2){
+                            fvalue = temp[0]*256 + temp[1];
+                        }else{
+                            fvalue = [];
+                            for(var i = 0; i < fvalue.length; i += 2){
+                                fvalue.push(fvalue[i]*256 + fvalue[i+1]);
+                            }
+                        }
+                        break;
+                case 'uint32_t':
+                        fvalue = this.readNumbers(Uint32Array, 4, arraySize);
+                        break;
+                default:
+//                        console.log("Reading "+ftype+" "+fname);
+                        if(arraySize == -1) arraySize = 1;
+                        for(var i = 0; i < arraySize; i++){
+                            fvalue = this.readStruct(this.findStructIndexByTypeIndex(f[j].typeIndex));
+//                            console.log(fvalue);
+                        }
+                        //throw "Unsupported type!";
+                        break;
+            }
+        }
+        x[fname] = fvalue;
+    }
+    if(offset + typeLength != this.offset)
+        throw "Offset error: {start: " + offset + ", end: " + this.offset + ", length: "+typeLength +"}";
+    s.data = x;
+    return x;
+};
+function countArraySize(field){
+    var i1 = field.indexOf('[');
+    if(i1 == -1) return i1;
+    var arraySize = 1;
+    for(var i2; i1 != -1; ) {
+        i2 = field.indexOf(']');
+        arraySize *= parseInt(field.substring(i1+1, i2), 10);
+        field = field.substring(i2+1);
+        i1 = field.indexOf('[');
+    }
+    return arraySize;
+};
+BlenderReader.prototype.readNumbers = function(bufType, elSize, arrSize){
+    if(arrSize == -1){
+        var num = new bufType(this.file, this.offset, 1);
+        this.offset += elSize;
+        return num[0];
+    } else {
+        var bufSize = elSize * arrSize;
+        var buffer = new bufType(this.file, this.offset, arrSize); this.offset += bufSize;
+        var array = [];
+        for(var i = 0; i < arrSize; i++){
+            array.push(buffer[i]);
+        }
+        return array;
+    }
+};
+BlenderReader.prototype.readPointers = function(arrSize){
+    var intsCount = this.pointerSize/4;
+    if(arrSize == -1){
+        var buffer = new Uint32Array(this.file, this.offset, intsCount);
+        this.offset += this.pointerSize;
+        var pointer = buffer[0].toString(16);
+        if(buffer.length == 2) pointer += buffer[1].toString(16);
+        return pointer;
+    } else {
+        var bufSize = this.pointerSize * arrSize;
+        var buffer = new Uint32Array(this.file, this.offset, intsCount*arrSize); this.offset += bufSize;
+        var array = [];
+        if(intsCount == 2){
+            for(var i = 0; i < arrSize; i++){
+                array.push(buffer[2*i].toString(16)+buffer[2*i+1].toString(16));
+            }
+        }else{
+            for(var i = 0, pos = 0; i < arrSize; i++){
+                array.push(buffer[i].toString(16));
+            }
+        }
+        return array;
+    }
+};
+BlenderReader.prototype.readValue = function(func, arrSize){
+    if(arrSize == -1) return func();
+    var array = [];
+    for(var i = 0; i < arrSize; i++){
+        array.push(func());
+    }
+    return array;
+};
+BlenderReader.prototype.findStructIndexByPointer = function(pointer){
+    var blocks = this.blocks;
+    for(var i in blocks){
+        if(blocks[i].pointer == pointer) return blocks[i].sdnaIndex;
+    }
+    return null;
+};
+BlenderReader.prototype.findStructIndexByTypeIndex = function(type){
+    var s = this.dna.structures;
+    for(var i in s){
+        if(s[i].type == type) return i;
+    }
+    return null;
+};
+BlenderReader.prototype.reviewStruct = function(typeName){
+    var s = this.dna.structures;
+    var n = this.dna.names;
+    var t = this.dna.types;
+    var tl = this.dna.typeLengths;
+    var x = {};
+    for(var i in s){
+        var si = s[i];
+        var type = t[si.type];
+        if(type == typeName){
+            var f = si.fields;
+            for(var j in f){
+                x[n[f[j].nameIndex]] = t[f[j].typeIndex];
+            }
+        }
+    }
+    var z = {};
+    z[typeName] = x;
+    return z;
 }
 
 function readStrings0(file, pos, maxLength, array){
