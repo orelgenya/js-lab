@@ -1,86 +1,3 @@
-function test(){
-    // Check for the various File API support.
-    if (window.File && window.FileReader && window.FileList && window.Blob) {
-        // Great success! All the File APIs are supported.
-    } else {
-        alert('The File APIs are not fully supported in this browser.');
-    }
-    document.getElementById('file').addEventListener('change', handleFileSelect, false);
-    getAsText("../READ");
-}
-
-function handleFileSelect(evt) {
-    var files = evt.target.files; // FileList object
-    // files is a FileList of File objects. List some properties.
-    for (var i = 0, f; f = files[i]; i++) {
-        console.log('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-            f.dataSize, ' bytes, last modified: ',
-            f.lastModifiedDate.toLocaleDateString(), '</li>');
-    }
-    startRead();
-}
-
-function startRead() {
-    // obtain input element through DOM
-
-    var file = document.getElementById('file').files[0];
-    if(file){
-        getAsText(file);
-    }
-}
-
-function getAsText(readFile) {
-
-    var reader = new FileReader();
-
-    // Handle progress, success, and errors
-    reader.onprogress = updateProgress;
-    reader.onload = loaded;
-    reader.onerror = errorHandler;
-
-    // Read file into memory as UTF-16
-    //reader.readAsText(readFile, "UTF-16");
-    reader.readAsArrayBuffer(readFile);
-
-}
-
-function updateProgress(evt) {
-    if (evt.lengthComputable) {
-        // evt.loaded and evt.total are ProgressEvent properties
-        var loaded = (evt.loaded / evt.total);
-        var bar = document.getElementById('bar');
-        if (loaded < 1) {
-            // Increase the prog bar length
-            bar.style.width = (loaded * 200) + "px";
-        } else {
-            bar.style.width = "200px";
-        }
-    }
-}
-
-function loaded(evt) {
-    // Obtain the read file data
-    var file = evt.target.result;
-    console.log("loaded "+file.byteLength);
-
-    var blend = new BlenderReader(file);
-    blend.read();
-    console.log(blend);
-    var s = blend.reviewStruct("Mesh");
-    console.log(s);
-    blend.readData();
-    console.log(blend);
-    blend.logBlocksCount();
-    var bi = blend.findBlockIndexByCode('ME');
-    if(!bi) return;
-    var me = blend.blocks[bi];
-    console.log(me);
-    bi = blend.findBlockIndexByPointer(me.structs[0]['*mvert']);
-    if(!bi) return;
-    var verts = blend.blocks[bi];
-    console.log(verts);
-}
-
 BlenderReader = function(file){
     this.file = file;
     this.blocks = [];
@@ -437,21 +354,11 @@ function readString0(buffer, pos){
     return String.fromCharCode.apply(null, buffer.subarray(pos, end));
 }
 
-function parseUnsignedShort(){
-
-}
-
 function allign(offset, i) {
     while (offset%i != 0) {
         offset++;
     }
     return offset;
-}
-
-function readString(file, size, updatePos){
-    var code = new Uint8Array(file, pos, size);
-    if(updatePos) pos += size;
-    return String.fromCharCode.apply(null, code);
 }
 
 function errorHandler(evt) {
