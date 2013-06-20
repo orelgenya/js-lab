@@ -79,12 +79,27 @@
             blend.logBlocksCount();
             var bi = blend.findBlockIndexByCode('ME');
             if(!bi) return;
-            var me = blend.blocks[bi];
-            console.log(me);
-            bi = blend.findBlockIndexByPointer(me.structs[0]['*mvert']);
-            if(!bi) return;
-            var verts = blend.blocks[bi];
-            console.log(verts);
+            var mesh = blend.resolvePointersForBlock(bi).structs[0];
+            console.log(mesh);
+
+            var mvert = mesh['*mvert'];
+            var mloop = mesh['*mloop'];
+            var vertices = [];
+            var indexes = [];
+            for(var i in mvert){
+                var co = mvert[i]['co[3]'];
+                vertices.push(co[0], co[1], co[2]);
+            }
+            for(var i in mloop){
+                indexes.push(mloop[i]['v']);
+            }
+
+//            var me = blend.blocks[bi];
+//            console.log(me);
+//            bi = blend.findBlockIndexByPointer(me.structs[0]['*mvert']);
+//            if(!bi) return;
+//            var verts = blend.blocks[bi];
+//            console.log(verts);
         }
     </script>
 </head>
