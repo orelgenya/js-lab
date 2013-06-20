@@ -187,9 +187,6 @@ BlenderReader.prototype.readStruct = function(sdnaIndex){
                 case 'double':
                         fvalue = this.readNumbers(Float64Array, 8, arraySize);
                         break;
-                case 'double':
-                        fvalue = this.readNumbers(Float64Array, 8, arraySize);
-                        break;
                 case 'uint64_t':
                         if(arraySize == -1) arraySize = 1;
                         var temp = this.readNumbers(Uint32Array, 4, arraySize*2);
@@ -237,9 +234,15 @@ function countArraySize(field){
 };
 BlenderReader.prototype.readNumbers = function(bufType, elSize, arrSize){
     if(arrSize == -1){
-        var num = new bufType(this.file, this.offset, 1);
-        this.offset += elSize;
-        return num[0];
+        try{
+            var num = new bufType(this.file, this.offset, 1);
+            this.offset += elSize;
+            return num[0];
+        }catch(e){
+            console.log(e);
+            this.offset += elSize;
+            return null;
+        }
     } else {
         var bufSize = elSize * arrSize;
         var buffer = new bufType(this.file, this.offset, arrSize); this.offset += bufSize;
@@ -309,6 +312,27 @@ BlenderReader.prototype.findBlockIndexByCode = function(code){
         if(b[i].code.indexOf(code) == 0) return i;
     }
     return null;
+};
+BlenderReader.prototype.resolvePointersForBlock = function(idx){
+    var b = this.blocks[idx];
+    for(var i in b.structs){
+        var s = b.structs[i];
+        for(var j in s){
+            if(j.indexOf('*') != -1) {
+                idx = this.findBlockIndexByPointer(s[j]);
+                if(idx){
+                    var v = this.blocks[idx];
+                    this.resolvePointersForBlock(idx);
+                    if(!v.structs || v.structs.length == 0) s[j] = null;
+                    else if(v.structs.length == 1) s[j] = v.structs[0];
+                    else{
+                        s[j] = v.structs;
+                    }
+                }
+            }
+        }
+    }
+    return b;
 };
 BlenderReader.prototype.reviewStruct = function(typeName){
     var s = this.dna.structures;

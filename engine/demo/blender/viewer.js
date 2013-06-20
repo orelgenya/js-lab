@@ -22,7 +22,7 @@ Mesh.prototype.initBuffers = function(){
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.vertexIndexBuffer);
     this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.vertexIndexes), this.gl.STATIC_DRAW);
     this.vertexIndexBufferItemSize = 1;
-    this.vertexIndexBufferNumItems = 36;
+    this.vertexIndexBufferNumItems = this.vertexIndexes.length;
 
     // texture coordinates
     this.vertexTextureCoordBuffer = this.gl.createBuffer();
@@ -194,47 +194,79 @@ function loaded(evt) {
     blend.logBlocksCount();
     var bi = blend.findBlockIndexByCode('ME');
     if(!bi) return;
-    var me = blend.blocks[bi];
-    console.log(me);
-    bi = blend.findBlockIndexByPointer(me.structs[0]['*mvert']);
-    if(!bi) return;
-    var verts = blend.blocks[bi];
-    console.log(verts);
-    var v = [];
-    v.v = verts;
-    v.xpush = function(){
-        for(var i in arguments){
-            var p = this.v.structs[arguments[i]];
-            for(var j = 0; j < 3; j++)
-                this.push(p["co[3]"][j]);
+//    var me = blend.blocks[bi];
+//    console.log(me);
+//    bi = blend.findBlockIndexByPointer(me.structs[0]['*mvert']);
+//    if(!bi) return;
+    var mesh = blend.resolvePointersForBlock(bi).structs[0];
+    console.log(mesh);
+    var mvert = mesh['*mvert'];
+    var mloop = mesh['*mloop'];
+    var mpoly = mesh['*mpoly'];
+    var vertices = [];
+    var indexes = [];
+    for(var i in mvert){
+        var co = mvert[i]['co[3]'];
+        vertices.push(co[0], co[1], co[2]);
+    }
+    for(var p in mpoly){
+        var ls = mpoly[p]['loopstart'];
+        var k = mpoly[p]['totloop'];
+        switch(k){
+            case 3:
+                indexes.push(mloop[ls]['v']);
+                indexes.push(mloop[ls]['v']);
+                indexes.push(mloop[ls+1]['v']);
+                indexes.push(mloop[ls+2]['v']);
+                indexes.push(mloop[ls+2]['v']);
+                break;
+            case 4:
+                indexes.push(mloop[ls+1]['v']);
+                indexes.push(mloop[ls+1]['v']);
+                indexes.push(mloop[ls+2]['v']);
+                indexes.push(mloop[ls]['v']);
+                indexes.push(mloop[ls+3]['v']);
+                indexes.push(mloop[ls+3]['v']);
+                break;
+            default:
+                throw "Polygons with only 3 or 4 points are supported!";
         }
     }
-    v.xpush(6,5,4,7);
-    v.xpush(2,1,0,3);
-    v.xpush(3,7,4,0);
-    v.xpush(2,1,5,6);
-    v.xpush(1,0,4,5);
-    v.xpush(2,6,7,3);
-    console.log(v);
-    test(v);
+    indexes = indexes.slice(1, indexes.length-1);
+//    v.v = verts;
+//    v.xpush = function(){
+//        for(var i in arguments){
+//            var p = this.v.structs[arguments[i]];
+//            for(var j = 0; j < 3; j++)
+//                this.push(p["co[3]"][j]);
+//        }
+//    }
+//    v.xpush(6,5,4,7);
+//    v.xpush(2,1,0,3);
+//    v.xpush(3,7,4,0);
+//    v.xpush(2,1,5,6);
+//    v.xpush(1,0,4,5);
+//    v.xpush(2,6,7,3);
+    var config = {vertices:vertices,indexes:indexes};
+    console.log(config);
+    test(config);
 }
 
 /////////////////////////////////
 
 var scene;
-function test(v) {
-
-
+function test(config) {
     var canvas = document.getElementById("canvas");
     initGL(canvas);
     initShaders();
 
     var data = loadJson('data08.json');
     data.gl = gl;
-    data.meshes[0].vertices = v;
+    data.meshes[0].vertices = config.vertices;
+    data.meshes[0].vertexIndexes = config.indexes;
     scene = new Scene(data);
-    scene.cloneMeshToPos(0, [0, 4, 0]);
-    scene.cloneMeshToPos(0, [0, -4, 0]);
+    //scene.cloneMeshToPos(0, [0, 4, 0]);
+    //scene.cloneMeshToPos(0, [0, -4, 0]);
 
     scene.initBuffers();
     scene.initTextures();
@@ -561,7 +593,7 @@ function drawMesh(mesh){
     setMatrixUniforms();
     mvPopMatrix();
 
-    gl.drawElements(gl.TRIANGLES, mesh.vertexIndexBufferNumItems, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLE_STRIP, mesh.vertexIndexBufferNumItems, gl.UNSIGNED_SHORT, 0);
 }
 
 var lastTime = 0;
