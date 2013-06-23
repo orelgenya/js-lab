@@ -112,33 +112,52 @@ BlenderReader.prototype.logBlocksCount = function(){
     for(var code in blocks){
         console.log(code + "[" + blocks[code]+"]");
     }
-}
+};
 BlenderReader.prototype.logBlockData = function(code){
     for(var b in this.blocks){
         if(this.blocks[b].code.indexOf(code) == 0){
             console.log(this.blocks[b]);
         }
     }
-}
+};
 BlenderReader.prototype.readData = function(){
     for(var i in this.blocks){
-        var b = this.blocks[i];
-        if(this.isSDNAFileBlock(b)){
+        this.readBlock(this.blocks[i]);
+    }
+};
+BlenderReader.prototype.readBlock = function(b){
+    if(this.isSDNAFileBlock(b)){
 //            console.log("************************");
 //            console.log("reading block["+i+"] " + b.code);
 //            console.log("************************");
-            this.offset = b.dataOffset;
-            b.structs = [];
-            for(var j = 0; j < b.countOfStructures; j++){
+        this.offset = b.dataOffset;
+        b.structs = [];
+        for(var j = 0; j < b.countOfStructures; j++){
 //                console.log("--------------------");
 //                console.log("reading structure " + this.dna.types[this.dna.structures[b.sdnaIndex].type]);
 //                console.log("--------------------");
-                var x = this.readStruct(b.sdnaIndex);
-                b.structs.push(x);
+            var x = this.readStruct(b.sdnaIndex);
+            b.structs.push(x);
 //                console.log(x);
+        }
+    }
+};
+BlenderReader.prototype.readMeshes = function(){
+    return this.readBlocks('ME');
+};
+BlenderReader.prototype.readBlocks = function(code){
+    var blocks = [];
+    for(var i in this.blocks){
+        var b = this.blocks[i];
+        if(b.code.indexOf(code) == 0){
+            this.readBlock(b);
+            this.resolvePointersForBlock(i);
+            for(var s in b.structs){
+                blocks.push(b.structs[s]);
             }
         }
     }
+    return blocks;
 };
 BlenderReader.prototype.isSDNAFileBlock = function(bhead){
     switch(bhead.code){
@@ -322,6 +341,7 @@ BlenderReader.prototype.resolvePointersForBlock = function(idx){
                 idx = this.findBlockIndexByPointer(s[j]);
                 if(idx){
                     var v = this.blocks[idx];
+                    if(!v.structs) this.readBlock(v);
                     this.resolvePointersForBlock(idx);
                     if(!v.structs || v.structs.length == 0) s[j] = null;
                     else if(v.structs.length == 1) s[j] = v.structs[0];
