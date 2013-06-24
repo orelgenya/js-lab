@@ -5,13 +5,7 @@ Engine = function(c){
     this.initGL();
     this.initShaders();
     this.initControls();
-
-    this.mvMatrix = mat4.create();
-    this.mvMatrixStack = [];
-    this.pMatrix = mat4.create();
-    this.angle = 45;
-    this.angleX = 0;
-    this.angleY = -66;
+    this.initCamera();
 
     this.gl.clearColor(0.2, 0.2, 0.2, 1.0);
     this.gl.enable(this.gl.DEPTH_TEST);
@@ -72,7 +66,12 @@ Engine.prototype.initControls = function(){
             delta = -e.detail/3;
         }
         if (delta){     // zoom
-            self.angle *= delta > 0 ? 0.8 : 1.25;
+//            self.angle *= delta > 0 ? 0.8 : 1.25;
+            var pos = [0,0,0];
+            mat4.multiplyVec3(self.camera.mvMatrix, pos);
+            vec3.normalize(pos);
+            vec3.scale(pos, delta);
+            mat4.translate(self.camera.mvMatrix, pos);
             self.drawScene();
         }
         if (e.preventDefault) e.preventDefault();
@@ -100,8 +99,8 @@ Engine.prototype.initControls = function(){
     var mousemove = function(e){
         if(e.which == 2 && track){
             var d = {x:pos.x- e.clientX,y:pos.y- e.clientY};
-            self.angleX -= d.x;
-            self.angleY -= d.y;
+            mat4.rotate(self.camera.mvMatrix, degToRad(-d.y), [1, 0, 0]);
+            mat4.rotate(self.camera.mvMatrix, degToRad(-d.x), [0, 0, 1]);
             pos.x = e.clientX;
             pos.y = e.clientY;
             self.drawScene();
@@ -114,8 +113,22 @@ Engine.prototype.initControls = function(){
     }
 
 };
-function degToRad(degrees){
-    return degrees * Math.PI / 180;
+Engine.prototype.initCamera = function(){
+    this.camera = {
+        mvMatrix : mat4.create(),
+        mvMatrixStack : [],
+        pMatrix : mat4.create(),
+        angle : 45,
+        near : 0.1,
+        far : 100.0,
+        z: -15
+    }
+    var c = this.camera;
+    mat4.perspective(c.angle, this.gl.viewportWidth / this.gl.viewportHeigth, c.near, c.far, c.pMatrix);
+    mat4.identity(c.mvMatrix);
+    mat4.translate(c.mvMatrix, [0, 0, c.z]);
+    mat4.rotate(c.mvMatrix, degToRad(-66), [1, 0, 0]);
+    mat4.rotate(c.mvMatrix, degToRad(0), [0, 1, 0]);
 };
 Engine.prototype.drawScene = function(scene){
     if(scene) this.scene = scene;
@@ -124,11 +137,11 @@ Engine.prototype.drawScene = function(scene){
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeigth);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    mat4.perspective(this.angle, gl.viewportWidth / gl.viewportHeigth, 0.1, 100.0, this.pMatrix);
-    mat4.identity(this.mvMatrix);
-    mat4.translate(this.mvMatrix, [0, 0.0, -15.0]);
-    mat4.rotate(this.mvMatrix, degToRad(this.angleX), [0, 1, 0]);
-    mat4.rotate(this.mvMatrix, degToRad(this.angleY), [1, 0, 0]);
+//    mat4.perspective(this.angle, gl.viewportWidth / gl.viewportHeigth, 0.1, 100.0, this.pMatrix);
+//    mat4.identity(this.mvMatrix);
+//    mat4.translate(this.mvMatrix, [0, 0.0, this.z]);
+//    mat4.rotate(this.mvMatrix, degToRad(this.angleX), [0, 1, 0]);
+//    mat4.rotate(this.mvMatrix, degToRad(this.angleY), [1, 0, 0]);
 
     this.drawGrid();
 
@@ -180,11 +193,11 @@ Engine.prototype.modifyMVMatrix = function(mesh){
         d = vec3.create();
         vec3.subtract(mesh.loc, mesh.parent.loc, d);
     } else d = mesh.loc;
-    mat4.translate(this.mvMatrix, d);
+    mat4.translate(this.camera.mvMatrix, d);
     if(mesh.rot){
-        mat4.rotate(this.mvMatrix, mesh.rot[0], [1, 0, 0]);
-        mat4.rotate(this.mvMatrix, mesh.rot[1], [0, 1, 0]);
-        mat4.rotate(this.mvMatrix, mesh.rot[2], [0, 0, 1]);
+        mat4.rotate(this.camera.mvMatrix, mesh.rot[0], [1, 0, 0]);
+        mat4.rotate(this.camera.mvMatrix, mesh.rot[1], [0, 1, 0]);
+        mat4.rotate(this.camera.mvMatrix, mesh.rot[2], [0, 0, 1]);
     }
 };
 Engine.prototype.initMeshBuffers = function(mesh){
@@ -264,14 +277,18 @@ Engine.prototype.getShader = function(gl, id){
 };
 Engine.prototype.mvPushMatrix = function(){
     var copy = mat4.create();
-    mat4.set(this.mvMatrix, copy);
-    this.mvMatrixStack.push(copy);
+    mat4.set(this.camera.mvMatrix, copy);
+    this.camera.mvMatrixStack.push(copy);
 };
 Engine.prototype.mvPopMatrix = function() {
-    if(this.mvMatrix.length == 0) throw "Invalid mvPopMatrix!";
-    this.mvMatrix = this.mvMatrixStack.pop();
+    if(this.camera.mvMatrix.length == 0) throw "Invalid mvPopMatrix!";
+    this.camera.mvMatrix = this.camera.mvMatrixStack.pop();
 };
 Engine.prototype.setMatrixUniforms = function(){
-    this.gl.uniformMatrix4fv(this.shaderProgram.pMatrixUniform, false, this.pMatrix);
-    this.gl.uniformMatrix4fv(this.shaderProgram.mvMatrixUniform, false, this.mvMatrix);
+    this.gl.uniformMatrix4fv(this.shaderProgram.pMatrixUniform, false, this.camera.pMatrix);
+    this.gl.uniformMatrix4fv(this.shaderProgram.mvMatrixUniform, false, this.camera.mvMatrix);
+};
+
+function degToRad(degrees){
+    return degrees * Math.PI / 180;
 };
