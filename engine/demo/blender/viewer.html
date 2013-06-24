@@ -12,7 +12,7 @@
 </head>
 <body onload="startViewer();">
 
-<canvas id="canvas" width="500" height="400"></canvas>
+<canvas id="canvas" width="800" height="400"></canvas>
 
 <style type="text/css">
     canvas, .settings{
@@ -72,7 +72,7 @@
                 <div id="bar" style="height: 10px; background-color: #228b22;width: 0px"></div>
             </div>
             <br>
-            <input type="text" id="mesh" name="mesh"/>
+            <input type="" id="mesh" name="mesh"/>
             <label for="mesh">Mesh Number (<span id="mesh_num">0</span>):</label>
         </fieldset>
     </form>
@@ -81,19 +81,25 @@
 <script id="shader-fs" type="x-shader/x-fragment">
     precision mediump float;
 
+    varying vec4 vColor;
+
     void main(void){
-        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+        gl_FragColor = vColor;
     }
 </script>
 
 <script id="shader-vs" type="x-shader/x-vertex">
     attribute vec3 aVertexPosition;
+    attribute vec4 aVertexColor;
 
     uniform mat4 uMVMatrix;
     uniform mat4 uPMatrix;
 
+    varying vec4 vColor;
+
     void main(void){
         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+        vColor = aVertexColor;
     }
 </script>
 </body>

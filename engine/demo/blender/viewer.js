@@ -27,19 +27,46 @@ function startViewer(){
             var blend = new BlenderReader(file);
             blend.read();
 
+
             blend.logBlocksCount();
 
             var objects = blend.readBlocks('OB');
             console.log(objects);
-            meshes = extractMeshes(objects);
-            for(var i in objects) console.log(i + ' - '+objects[i]['id']['name[66]']);
+            var map = {}, structs = [], tree = [];
+            for(var i in objects){
+                var o = objects[i];
+                map[o.pointer] = objects[i];
+                for(var j in o.structs){
+                    structs.push(o.structs[j]);
+                }
+            }
+            for(var i in structs){
+                var s = structs[i];
+                if(!s['*parent']) {
+                    tree.push(s)
+                    console.log(i + ' - '+s['id']['name[66]'] + ' - Parent!');
+                } else
+                    console.log(i + ' - '+s['id']['name[66]']);
+            }
+            meshes = extractMeshes(structs);
+
+            for(var i in blend.blocks){
+                var b = blend.blocks[i];
+                if(b.code.indexOf('OB') == 0){
+                    console.log(b.pointer + ' -> ' + b.structs[0]['id']['name[66]']);
+                }
+            }
 
             var mn = document.getElementById("mesh_num");
             mn.innerHTML = meshes.length;
             var scene = {meshes: meshes};
             g.drawScene(scene);
 
-
+            var objects = blend.readStructsByBlockCode('SC');
+            console.log(objects);
+            var base = objects[0]['base'];
+            var idx = blend.findBlockIndexByPointer(base['*next']);
+            console.log(idx);
         }
     });
 
@@ -52,8 +79,9 @@ function startViewer(){
                 scene.meshes = [];
                 var x = m.value.split(',');
                 for(var i = 0; i < x.length; i++){
-                    if(x[i] < meshes.length)
-                        scene.meshes.push(meshes[x[i]]);
+                    var z = meshes[x[i]];
+                    if(!z) z = map[x[i]];
+                    if(z) scene.meshes.push(z);
                 }
             } else scene.meshes = meshes;
             g.drawScene(scene);
@@ -61,10 +89,20 @@ function startViewer(){
     }, false);
 }
 
+var map = {};
 function extractMeshes(objects){
-    var obj, mesh, mvert, medge, co, e;
-    var res = [], vertices, indexes;
     for(var i in objects){
+        map[objects[i]['id']['name[66]']] = {};
+    }
+    var id, pid;
+    var obj, mesh, mvert, medge, co, e;
+    var res = [], resmesh, vertices, indexes;
+    for(var i in objects){
+        id = objects[i]['id']['name[66]'];
+        if(objects[i]['*parent'])
+            pid = objects[i]['*parent']['id']['name[66]'];
+        else pid = null;
+
         obj = objects[i];
         mesh = obj['*data'];
         if(!mesh) continue;
@@ -82,7 +120,19 @@ function extractMeshes(objects){
             indexes.push(e.v1);
             indexes.push(e.v2);
         }
-        res.push({vertices:vertices, indexes:indexes, loc:obj['loc[3]']});
+        map[id].vertices = vertices;
+        map[id].indexes = indexes;
+        map[id].loc = obj['loc[3]'];
+        map[id].rot = obj['rot[3]'];
+        map[id].id = id;
+        map[id].color = [0.84, 0.86, 0.89   ,1.0];
+        if(!pid) res.push(map[id]);
+        else {
+            var pmesh = map[pid];
+            if(!pmesh.submesh) pmesh.submesh = [];
+            pmesh.submesh.push(map[id]);
+            map[id].parent = pmesh;
+        }
     }
     return res;
 }

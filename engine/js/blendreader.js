@@ -20,7 +20,7 @@ BlenderReader.prototype.read = function(){
 }
 BlenderReader.prototype.readHeader = function(){
     var h = new Uint8Array(this.file, 0, 12);
-    this.version = String.fromCharCode.apply(null, h);
+    this.version = readString0(h, 0);
     this.pointerSize = this.version.charAt(7);
     if(this.pointerSize == '_') this.pointerSize = 4;
     else if(this.pointerSize = '-') this.pointerSize = 8;
@@ -32,7 +32,7 @@ BlenderReader.prototype.readFileBlockHeader = function(){
     var pos = this.offset;
     var bhead = {};
     var code = new Uint8Array(this.file, pos, 4); pos += 4;
-    bhead.code = String.fromCharCode.apply(null, code);
+    bhead.code = readString0(code, 0);
 
     var size = new Uint32Array(this.file, pos, 1); pos += 4;
     bhead.dataSize = size[0];
@@ -54,7 +54,7 @@ BlenderReader.prototype.readDNA = function(bhead){
     var pos = this.offset;
     var dna = {names:[],types:[],typeLengths:[],structures:[]};
     var sdnaname = new Uint8Array(this.file, pos, 8); pos += 8;
-    dna.SDNANAME = String.fromCharCode.apply(null, sdnaname);
+    dna.SDNANAME = readString0(sdnaname, 0);
 
     // parseNames
     pos = readStrings0(this.file, pos, this.offset + bhead.dataSize - pos, dna.names);
@@ -62,12 +62,12 @@ BlenderReader.prototype.readDNA = function(bhead){
 
     // parseTypes
     var type = new Uint8Array(this.file, pos, 4); pos += 4;
-    dna.TYPE = String.fromCharCode.apply(null, type);
+    dna.TYPE = readString0(type, 0);
     pos = readStrings0(this.file, pos, this.offset + bhead.dataSize - pos, dna.types);
     pos = allign(pos, 4);
 
     var tlen = new Uint8Array(this.file, pos, 4); pos += 4;
-    dna.TLEN = String.fromCharCode.apply(null, tlen);
+    dna.TLEN = readString0(tlen, 0);
 
     tlen = dna.types.length;
 //    var tlens = new Uint8Array(this.file, pos, 2*tlen);
@@ -80,7 +80,7 @@ BlenderReader.prototype.readDNA = function(bhead){
 
     // parseStructures
     var strc = new Uint8Array(this.file, pos, 4); pos += 4;
-    dna.STRC = String.fromCharCode.apply(null, strc);
+    dna.STRC = readString0(strc, 0);
 
     var snum = new Uint32Array(this.file, pos, 1)[0]; pos += 4;
     for(var i = 0; i < snum; i++){
@@ -115,7 +115,7 @@ BlenderReader.prototype.logBlocksCount = function(){
 };
 BlenderReader.prototype.logBlockData = function(code){
     for(var b in this.blocks){
-        if(this.blocks[b].code.indexOf(code) == 0){
+        if(this.blocks[b].code == code){
             console.log(this.blocks[b]);
         }
     }
@@ -143,18 +143,30 @@ BlenderReader.prototype.readBlock = function(b){
     }
 };
 BlenderReader.prototype.readMeshes = function(){
-    return this.readBlocks('ME');
+    return this.readStructsByBlockCode('ME');
 };
-BlenderReader.prototype.readBlocks = function(code){
+BlenderReader.prototype.readStructsByBlockCode = function(code){
     var blocks = [];
     for(var i in this.blocks){
         var b = this.blocks[i];
-        if(b.code.indexOf(code) == 0){
+        if(b.code == code){
             this.readBlock(b);
             this.resolvePointersForBlock(i);
             for(var s in b.structs){
                 blocks.push(b.structs[s]);
             }
+        }
+    }
+    return blocks;
+};
+BlenderReader.prototype.readBlocks = function(code){
+    var blocks = [];
+    for(var i in this.blocks){
+        var b = this.blocks[i];
+        if(b.code == code){
+            this.readBlock(b);
+            this.resolvePointersForBlock(i);
+            blocks.push(b);
         }
     }
     return blocks;
@@ -189,7 +201,7 @@ BlenderReader.prototype.readStruct = function(sdnaIndex){
                 case 'uchar':
                         if(arraySize == -1) arraySize = 1;
                         var buffer = new Uint8Array(this.file, this.offset, arraySize); this.offset += arraySize;
-                        fvalue = String.fromCharCode.apply(null, buffer);
+                        fvalue = readString0(buffer, 0);
                         break;
                 case 'short':
                         fvalue = this.readNumbers(Int16Array, 2, arraySize);
@@ -328,11 +340,13 @@ BlenderReader.prototype.findBlockIndexByPointer = function(pointer){
 BlenderReader.prototype.findBlockIndexByCode = function(code){
     var b = this.blocks;
     for(var i in b){
-        if(b[i].code.indexOf(code) == 0) return i;
+        if(b[i].code == code) return i;
     }
     return null;
 };
-BlenderReader.prototype.resolvePointersForBlock = function(idx){
+BlenderReader.prototype.resolvePointersForBlock = function(idx, stack){
+    if(!stack) cache = [];
+    cache[idx] = 1;
     var b = this.blocks[idx];
     for(var i in b.structs){
         var s = b.structs[i];
@@ -342,7 +356,10 @@ BlenderReader.prototype.resolvePointersForBlock = function(idx){
                 if(idx){
                     var v = this.blocks[idx];
                     if(!v.structs) this.readBlock(v);
-                    this.resolvePointersForBlock(idx);
+                    if(!cache[idx]){
+//                        console.log('resolve for b['+idx+'] = '+ v.code);
+                        this.resolvePointersForBlock(idx, cache);
+                    }
                     if(!v.structs || v.structs.length == 0) s[j] = null;
                     else if(v.structs.length == 1) s[j] = v.structs[0];
                     else{
@@ -392,7 +409,7 @@ function readStrings0(file, pos, maxLength, array){
 function readString0(buffer, pos){
     if(pos >= buffer.length) return null;
     var end = pos;
-    while(buffer[end] != 0){
+    while(buffer.length > end && buffer[end] != 0){
         end++;
     }
     return String.fromCharCode.apply(null, buffer.subarray(pos, end));
