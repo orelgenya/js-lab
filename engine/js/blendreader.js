@@ -344,8 +344,8 @@ BlenderReader.prototype.findBlockIndexByCode = function(code){
     }
     return null;
 };
-BlenderReader.prototype.resolvePointersForBlock = function(idx, stack){
-    if(!stack) cache = [];
+BlenderReader.prototype.resolvePointersForBlock = function(idx, cache){
+    if(!cache) cache = [];
     cache[idx] = 1;
     var b = this.blocks[idx];
     for(var i in b.structs){

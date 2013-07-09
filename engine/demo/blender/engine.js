@@ -66,12 +66,18 @@ Engine.prototype.initControls = function(){
             delta = -e.detail/3;
         }
         if (delta){     // zoom
-//            self.angle *= delta > 0 ? 0.8 : 1.25;
-            var pos = [0,0,0];
-            mat4.multiplyVec3(self.camera.mvMatrix, pos);
-            vec3.normalize(pos);
-            vec3.scale(pos, delta);
-            mat4.translate(self.camera.mvMatrix, pos);
+            self.camera.shift[2] += delta;
+
+//            var pos = [0,0,0];
+//            mat4.multiplyVec3(self.camera.mvMatrix, pos);
+//            vec3.normalize(pos);
+//            vec3.scale(pos, delta);
+//            mat4.translate(self.camera.mvMatrix, pos);
+
+//            var shift = mat4.create();
+//            mat4.identity(shift);
+//            mat4.translate(shift, [0,delta,0]);
+//            mat4.multiply(shift, self.camera.mvMatrix, self.camera.mvMatrix);
             self.drawScene();
         }
         if (e.preventDefault) e.preventDefault();
@@ -99,8 +105,32 @@ Engine.prototype.initControls = function(){
     var mousemove = function(e){
         if(e.which == 2 && track){
             var d = {x:pos.x- e.clientX,y:pos.y- e.clientY};
-            mat4.rotate(self.camera.mvMatrix, degToRad(-d.y), [1, 0, 0]);
-            mat4.rotate(self.camera.mvMatrix, degToRad(-d.x), [0, 0, 1]);
+
+
+            var t = [0,0,0];
+            mat4.multiplyVec3(self.camera.mvMatrix, t);
+            mat4.translate(self.camera.mvMatrix, [-t[0], -t[1], -t[2]]);
+//            mat4.rotate(self.camera.mvMatrix, degToRad(-d.y), [1, 0, 0]);
+//            mat4.rotate(self.camera.mvMatrix, degToRad(-d.x), [0, 0, 1]);
+//            mat4.translate(self.camera.mvMatrix, t);
+
+
+//            var shift = mat4.create();
+//            mat4.identity(shift);
+//            mat4.translate(shift, degToRad(-d.y), [1, 0, 0]);
+//            mat4.rotate(shift, degToRad(-d.y), [1, 0, 0]);
+//            mat4.rotate(shift, degToRad(-d.x), [0, 0, 1]);
+//            mat4.multiply(shift, self.camera.mvMatrix, self.camera.mvMatrix);
+
+//            mat4.rotate(self.camera.mvMatrix, degToRad(-d.y), [1, 0, 0]);
+//            mat4.rotate(self.camera.mvMatrix, degToRad(-d.x), [0, 0, 1]);
+
+
+//            var n = [0,0,0];
+//            mat4.multiplyVec3(self.camera.mvMatrix, n);
+//            vec3.normalize(n);
+//
+//            vec3.add(self.camera.angle, [d.x*n[0], d.y*n[1], 0]);
             pos.x = e.clientX;
             pos.y = e.clientY;
             self.drawScene();
@@ -118,17 +148,18 @@ Engine.prototype.initCamera = function(){
         mvMatrix : mat4.create(),
         mvMatrixStack : [],
         pMatrix : mat4.create(),
-        angle : 45,
+        fovy : 45,
+        angle : [-66,0,0],
         near : 0.1,
         far : 100.0,
-        z: -15
+        shift: [0,0,-15]
     }
     var c = this.camera;
-    mat4.perspective(c.angle, this.gl.viewportWidth / this.gl.viewportHeigth, c.near, c.far, c.pMatrix);
+    mat4.perspective(c.fovy, this.gl.viewportWidth / this.gl.viewportHeigth, c.near, c.far, c.pMatrix);
     mat4.identity(c.mvMatrix);
-    mat4.translate(c.mvMatrix, [0, 0, c.z]);
-    mat4.rotate(c.mvMatrix, degToRad(-66), [1, 0, 0]);
-    mat4.rotate(c.mvMatrix, degToRad(0), [0, 1, 0]);
+    mat4.translate(c.mvMatrix, c.shift);
+    mat4.rotate(c.mvMatrix, degToRad(c.angle[0]), [1, 0, 0]);
+    mat4.rotate(c.mvMatrix, degToRad(c.angle[1]), [0, 1, 0]);
 };
 Engine.prototype.drawScene = function(scene){
     if(scene) this.scene = scene;
@@ -137,11 +168,13 @@ Engine.prototype.drawScene = function(scene){
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeigth);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-//    mat4.perspective(this.angle, gl.viewportWidth / gl.viewportHeigth, 0.1, 100.0, this.pMatrix);
-//    mat4.identity(this.mvMatrix);
-//    mat4.translate(this.mvMatrix, [0, 0.0, this.z]);
-//    mat4.rotate(this.mvMatrix, degToRad(this.angleX), [0, 1, 0]);
-//    mat4.rotate(this.mvMatrix, degToRad(this.angleY), [1, 0, 0]);
+//    var c = this.camera;
+//    mat4.perspective(c.fovy, gl.viewportWidth / gl.viewportHeigth, 0.1, 100.0, c.pMatrix);
+//    mat4.identity(c.mvMatrix);
+//    mat4.translate(c.mvMatrix, c.shift);
+//    mat4.rotate(c.mvMatrix, degToRad(c.angle[0]), [0, 1, 0]);
+//    mat4.rotate(c.mvMatrix, degToRad(c.angle[1]), [1, 0, 0]);
+//    mat4.rotate(c.mvMatrix, degToRad(c.angle[2]), [0, 0, 1]);
 
     this.drawGrid();
 

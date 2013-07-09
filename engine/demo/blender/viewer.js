@@ -53,7 +53,13 @@ function startViewer(){
             for(var i in blend.blocks){
                 var b = blend.blocks[i];
                 if(b.code.indexOf('OB') == 0){
-                    console.log(b.pointer + ' -> ' + b.structs[0]['id']['name[66]']);
+                    var name = b.structs[0]['id']['name[66]'];
+                    console.log(b.pointer + ' -> ' + name);
+
+                    if(name == 'OBCube'){
+                        console.log(b);
+                    }
+
                 }
             }
 
@@ -67,6 +73,23 @@ function startViewer(){
             var base = objects[0]['base'];
             var idx = blend.findBlockIndexByPointer(base['*next']);
             console.log(idx);
+
+
+
+            idx = blend.findBlockIndexByPointer('1b1cdc780');
+            var b = blend.blocks[idx];
+            blend.readBlock(b);
+            blend.resolvePointersForBlock(idx);
+            console.log("MTex 1b1cdc780:");
+            console.log(b);
+
+            idx = blend.findBlockIndexByPointer('474e5089a1a0a0d');
+            console.log(idx);
+//            b = blend.blocks[idx];
+//            blend.readBlock(b);
+//            blend.resolvePointersForBlock(idx);
+//            console.log("MTex preview rect d99a4280:");
+//            console.log(b);
         }
     });
 
