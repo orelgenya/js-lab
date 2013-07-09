@@ -1,4 +1,4 @@
-oni2
+js-lab
 ====
 
-experimental wegbl game based on ONI game
+JavaScript experiments
